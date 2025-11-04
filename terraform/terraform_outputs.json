@@ -2,12 +2,12 @@
   "bastion_public_ip": {
     "sensitive": false,
     "type": "string",
-    "value": "13.40.98.105"
+    "value": "3.8.117.50"
   },
   "postgres_private_ip": {
     "sensitive": false,
     "type": "string",
-    "value": "10.0.2.149"
+    "value": "10.0.2.81"
   },
   "private_subnet_id": {
     "sensitive": false,
@@ -22,7 +22,7 @@
   "redis_private_ip": {
     "sensitive": false,
     "type": "string",
-    "value": "10.0.2.79"
+    "value": "10.0.2.209"
   },
   "vpc_id": {
     "sensitive": false,
