@@ -76,13 +76,13 @@ resource "aws_security_group" "redis_worker" {
     security_groups = [aws_security_group.vote_result.id]
   }
 
-  /* ingress {
+  ingress {
     description     = "Redis from bastion SG"
     from_port       = 6379
     to_port         = 6379
     protocol        = "tcp"
     security_groups = [aws_security_group.vote_result.id]
-  } */
+  }
 
   egress {
     from_port   = 0
@@ -111,13 +111,13 @@ resource "aws_security_group" "postgress" {
     security_groups = [aws_security_group.vote_result.id]
   }
 
-  /* ingress {
+  ingress {
     description     = "Postgres from bastion SG"
     from_port       = 5432
     to_port         = 5432
     protocol        = "tcp"
     security_groups = [aws_security_group.vote_result.id]
-  } */
+  }
 
   egress {
     from_port   = 0
