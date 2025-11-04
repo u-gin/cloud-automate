@@ -69,12 +69,20 @@ resource "aws_security_group" "redis_worker" {
   vpc_id      = var.vpc_id
 
   ingress {
+    description     = "SSH from Bastion"
+    from_port       = 22
+    to_port         = 22
+    protocol        = "tcp"
+    security_groups = [aws_security_group.vote_result.id]
+  }
+
+  /* ingress {
     description     = "Redis from bastion SG"
     from_port       = 6379
     to_port         = 6379
     protocol        = "tcp"
     security_groups = [aws_security_group.vote_result.id]
-  }
+  } */
 
   egress {
     from_port   = 0
@@ -84,7 +92,7 @@ resource "aws_security_group" "redis_worker" {
   }
 
   tags = {
-    Name = "redisWorker_sg_jke"
+    Name = "redisWorker_sg_ugn"
   }
 }
 
@@ -96,12 +104,20 @@ resource "aws_security_group" "postgress" {
   vpc_id      = var.vpc_id
 
   ingress {
+    description     = "SSH from Bastion"
+    from_port       = 22
+    to_port         = 22
+    protocol        = "tcp"
+    security_groups = [aws_security_group.vote_result.id]
+  }
+
+  /* ingress {
     description     = "Postgres from bastion SG"
     from_port       = 5432
     to_port         = 5432
     protocol        = "tcp"
     security_groups = [aws_security_group.vote_result.id]
-  }
+  } */
 
   egress {
     from_port   = 0
@@ -111,14 +127,14 @@ resource "aws_security_group" "postgress" {
   }
 
   tags = {
-    Name = "postgress_sg_jke"
+    Name = "postgress_sg_ugn"
   }
 }
 
 // INSTANCES
 
 // Bastion instance - public access enabled (simple demo)
-resource "aws_instance" "jke_bastion" {
+resource "aws_instance" "ugn_bastion" {
   ami                         = var.ami_id
   instance_type               = var.instance_type_bastion
   subnet_id                   = var.public_subnet_id
@@ -132,12 +148,13 @@ resource "aws_instance" "jke_bastion" {
 }
 
 // Redis worker instance - no public IP (still in default VPC subnet for now)
-resource "aws_instance" "jke_redisWorker" {
+resource "aws_instance" "ugn_redisWorker" {
   ami                         = var.ami_id
   instance_type               = var.instance_type_redis
   subnet_id                   = var.private_subnet_id
   associate_public_ip_address = false
   vpc_security_group_ids      = [aws_security_group.redis_worker.id]
+  key_name                    = var.key_name
 
   tags = {
     Name = var.redis_worker_instance_name
@@ -146,12 +163,13 @@ resource "aws_instance" "jke_redisWorker" {
 
 // Postgres instance - no public IP (still in default VPC subnet for now)
 // NOTE: name kept as "postgress" to match your request
-resource "aws_instance" "jke_postgress" {
+resource "aws_instance" "ugn_postgress" {
   ami                         = var.ami_id
   instance_type               = var.instance_type_pg
   subnet_id                   = var.private_subnet_id
   associate_public_ip_address = false
   vpc_security_group_ids      = [aws_security_group.postgress.id]
+  key_name                    = var.key_name
 
   tags = {
     Name = var.postgres_instance_name

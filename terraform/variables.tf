@@ -79,15 +79,15 @@ variable "route_table_name" {
 
 variable "bastion_instance_name" {
   description = "Name of bastion host instance"
-  type = string
+  type        = string
 }
 
 variable "postgres_instance_name" {
   description = "Name of postgres instance"
-  type = string
+  type        = string
 }
 
 variable "redis_worker_instance_name" {
   description = "Name of worker and redis instance"
-  type = string
+  type        = string
 }
