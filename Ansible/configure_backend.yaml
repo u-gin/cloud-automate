@@ -1,0 +1,21 @@
+---
+- name: Pull redis and worker images
+  hosts: backend
+  become: yes
+
+  tasks:
+    - name: Pull redis image
+      command: docker pull redis:latest
+
+    - name: Pull worker app image
+      command: docker pull ugindev/worker-app:latest
+
+    - name: Run Redis container
+      command: docker run -d --name redisc -p 6379:6379 redis:latest
+    
+    - name: Run worker app container
+      command: >
+        docker run -d --name worker
+        -e REDIS_HOST=redis
+        -e db
+        ugindev/worker-app:latest
