@@ -28,6 +28,9 @@ module "vpc_module" {
   private_insatnce_availability_zone = var.private_insatnce_availability_zone
   internet_gateway_name              = var.internet_gateway_name
   route_table_name                   = var.route_table_name
+  nat_eip_name                       = var.nat_eip_name
+  nat_gateway_name                   = var.nat_gateway_name
+  private_route_table_name           = var.private_route_table_name
 }
 
 module "ec2_module" {
