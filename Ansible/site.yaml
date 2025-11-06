@@ -1,0 +1,6 @@
+---
+- import_playbook: setup.yaml
+- import_playbook: install_docker.yaml
+- import_playbook: configure_database.yaml
+- import_playbook: configure_backend.yaml
+- import_playbook: configure_frontend.yaml
