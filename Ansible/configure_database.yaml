@@ -1,16 +1,35 @@
 ---
-- name: Install and configure PostgreSQL server
+- name: Deploy PostgreSQL container
   hosts: db
   become: yes
 
   tasks:
-    - name: Install PostgreSQL
-      apt:
-        name: postgresql
-        state: present
-
-    - name: Start and enable PostgreSQL service
+    - name: Stop any local PostgreSQL service
       systemd:
         name: postgresql
+        state: stopped
+      ignore_errors: yes
+
+    - name: Remove existing PostgreSQL container
+      community.docker.docker_container:
+        name: postgresdb
+        state: absent
+      ignore_errors: yes
+
+    - name: Pull PostgreSQL image
+      community.docker.docker_image:
+        name: postgres:15-alpine
+        source: pull
+
+    - name: Run PostgreSQL container
+      community.docker.docker_container:
+        name: postgresdb
+        image: postgres:15-alpine
         state: started
-        enabled: yes
+        restart_policy: always
+        ports:
+          - "5432:5432"
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres

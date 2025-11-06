@@ -2,31 +2,31 @@
   "bastion_public_ip": {
     "sensitive": false,
     "type": "string",
-    "value": "3.8.117.50"
+    "value": "35.179.134.37"
   },
   "postgres_private_ip": {
     "sensitive": false,
     "type": "string",
-    "value": "10.0.2.81"
+    "value": "10.0.2.212"
   },
   "private_subnet_id": {
     "sensitive": false,
     "type": "string",
-    "value": "subnet-0baf24af0b3a59e99"
+    "value": "subnet-006b020737e25b301"
   },
   "public_subnet_id": {
     "sensitive": false,
     "type": "string",
-    "value": "subnet-0ab66dcba3b444813"
+    "value": "subnet-0b17351ae852f275e"
   },
   "redis_private_ip": {
     "sensitive": false,
     "type": "string",
-    "value": "10.0.2.209"
+    "value": "10.0.2.15"
   },
   "vpc_id": {
     "sensitive": false,
     "type": "string",
-    "value": "vpc-088fc01a4a88dc3ef"
+    "value": "vpc-07a6c8d9f2d86e21d"
   }
 }
