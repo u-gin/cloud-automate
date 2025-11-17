@@ -1,2 +1,20 @@
-api-version: apps/v1
+apiVersion: apps/v1
 kind: Deployment
+metadata: 
+  name: eugene-deployment-redis
+  namespace: eugene
+spec: 
+  replicas: 1
+  selector:
+    matchLabels:
+      app: eugene-deployment-redis
+  template:
+    metadata:
+      labels:
+        app: eugene-deployment-redis
+    spec:
+      containers:
+        - name: eugene-deployment-redis
+          image: redis:alpine
+          ports:
+            - containerPort: 6379
