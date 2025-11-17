@@ -20,11 +20,11 @@ COPY . .
 
 # Set default environment variables for both the application and PostgreSQL connection
 ENV PORT=80 \
-    PG_HOST=10.0.2.212 \
-    PG_PORT=5432 \
-    PG_USER=postgres \
-    PG_PASSWORD=postgres \
-    PG_DATABASE=postgres
+    POSTGRES_HOST=10.0.2.212 \
+    POSTGRES_PORT=5432 \
+    POSTGRES_USER=postgres \
+    POSTGRES_PASSWORD=postgres \
+    POSTGRES_DATABASE=postgres
 
 EXPOSE 80
 
