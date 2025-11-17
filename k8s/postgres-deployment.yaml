@@ -1,2 +1,40 @@
-api-version: apps/v1
+apiVersion: apps/v1
 kind: Deployment
+metadata: 
+  name: eugene-deployment-postgres
+  namespace: eugene
+spec: 
+  replicas: 1
+  selector:
+    matchLabels:
+      app: eugene-deployment-postgres
+  template:
+    metadata:
+      labels:
+        app: eugene-deployment-postgres
+    spec:
+      containers:
+        - name: eugene-deployment-postgres
+          image: postgres:15-alpine
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: eugene-secrets-postgres
+                  key: POSTGRES_USER
+
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: eugene-secrets-postgres
+                  key: POSTGRES_PASSWORD
+
+          volumeMounts:
+            - name: eugene-postgres-storage
+              mountPath: /var/lib/postgresql/data
+
+      volumes:
+        - name: eugene-postgres-storage
+          emptyDir: {}
