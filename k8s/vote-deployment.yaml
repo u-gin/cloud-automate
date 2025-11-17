@@ -1,32 +1,27 @@
 apiVersion: apps/v1
 kind: Deployment
-metadata:
-  name: eugene-deployment-vote 
+metadata: 
+  name: eugene-deployment-vote
   namespace: eugene
-  labels:
-    app: vote
-spec:
-  replicas: 3
+spec: 
+  replicas: 2
   selector:
     matchLabels:
-      app: vote
+      app: eugene-deployment-vote
   template:
     metadata:
       labels:
-        app: vote
+        app: eugene-deployment-vote
     spec:
       containers:
-        - name: frontend
-          image: ugindev/lab-frontend:1.0
+        - name: eugene-deployment-vote
+          image: ugindev/vote:latest
           ports:
             - containerPort: 80
-          readinessProbe:
-            httpGet:
-              path: /
-              port: 80
-          livenessProbe:
-            httpGet:
-              path: /
-              port: 80
-          
+          env:
             
+            - name: REDIS_HOST
+              value: "eugene-service-REDIS"
+
+            - name: REDIS_PORT
+              value: "6379"
