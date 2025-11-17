@@ -17,10 +17,10 @@ namespace Worker
             try
             {
                 // Fetch configuration from environment variables
-                var dbHost = Environment.GetEnvironmentVariable("DB_HOST") ?? "db";
-                var dbUsername = Environment.GetEnvironmentVariable("DB_USERNAME") ?? "postgres";
-                var dbPassword = Environment.GetEnvironmentVariable("DB_PASSWORD") ?? "postgres";
-                var dbName = Environment.GetEnvironmentVariable("DB_NAME") ?? "postgres";
+                var dbHost = Environment.GetEnvironmentVariable("POSTGRES_HOST") ?? "db";
+                var dbUsername = Environment.GetEnvironmentVariable("POSTGRES_USER") ?? "postgres";
+                var dbPassword = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD") ?? "postgres";
+                var dbName = Environment.GetEnvironmentVariable("POSTGRES_NAME") ?? "postgres";
                 
                 var redisHost = Environment.GetEnvironmentVariable("REDIS_HOST") ?? "redis";
 

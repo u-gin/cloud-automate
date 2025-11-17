@@ -1,2 +1,35 @@
-api-version: apps/v1
-kind: Deployments
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eugene-deployment-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: eugene-deployment-worker
+  template:
+    metadata:
+      labels:
+        app: eugene-deployment-worker
+    spec:
+      containers:
+        - name: eugene-deployment-worker
+          image: ugindev/worker:latest
+          env:
+            - name: REDIS_HOST
+              value: "eugene-server-redis"
+              
+            - name: POSTGRES_HOST
+              value: "eugene-server-postgres"
+
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: eugene-secrets-postgres
+                  key: POSTGRES_USER
+
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: eugene-secrets-postgres
+                  key: POSTGRES_PASSWORD
