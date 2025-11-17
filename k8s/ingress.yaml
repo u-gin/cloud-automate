@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: eugene-ingress-voting-app
+  namespace: eugene
+spec:
+  ingressClassName: nginx-eugene
+  rules:
+    - host: eugene.local
+      http:
+        paths:
+          - path: /vote
+            pathType: Prefix
+            backend:
+              service:
+                name: eugene-service-vote
+                port:
+                  number: 80
+
+          - path: /result
+            pathType: Prefix
+            backend:
+              service:
+                name: eugene-service-result
+                port:
+                  number: 80
