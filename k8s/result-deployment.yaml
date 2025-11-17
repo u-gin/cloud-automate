@@ -1,2 +1,41 @@
-api-version: apps/v1
+apiVersion: apps/v1
 kind: Deployment
+metadata: 
+  name: eugene-deployment-result
+  namespace: eugene
+spec: 
+  replicas: 2
+  selector:
+    matchLabels:
+      app: eugene-deployment-result
+  template:
+    metadata:
+      labels:
+        app: eugene-deployment-result
+    spec:
+      containers:
+        - name: eugene-deployment-result
+          image: ugindev/result:latest
+          ports:
+            - containerPort: 80
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: eugene-secrets-postgres
+                  key: POSTGRES_USER
+
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: eugene-secrets-postgres
+                  key: POSTGRES_PASSWORD
+            
+            - name: POSTGRES_HOST
+              value: "eugene-service-postgres"
+
+            - name: POSTGRES_PORT
+              value: "5432"
+            
+            - name: POSTGRES_DATABASE
+              value: postgres
