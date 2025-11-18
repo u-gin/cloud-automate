@@ -4,7 +4,7 @@ metadata:
   name: eugene-deployment-result
   namespace: eugene
 spec: 
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: eugene-deployment-result
