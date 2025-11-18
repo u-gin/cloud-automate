@@ -154,7 +154,7 @@ jobs:
             kubectl -n "$K8S_NAMESPACE" set image deployment/eugene-deployment-result eugene-deployment-result=${{ steps.tag.outputs.result_image }}
             kubectl -n "$K8S_NAMESPACE" set image deployment/eugene-deployment-worker eugene-deployment-worker=${{ steps.tag.outputs.worker_image }}
 
-        # Patch ingress to ensure correct host
+        ## Patch ingress to ensure correct host
 #      - name: Patch Ingress host if needed
 #        shell: bash
 #        run: |
