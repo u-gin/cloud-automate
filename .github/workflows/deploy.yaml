@@ -21,7 +21,7 @@ jobs:
 
     strategy:
       matrix:
-        app: [postgres, redis, worker, vote, result]
+        app: [worker, vote, result]
 
     permissions:
       id-token: write
@@ -57,30 +57,22 @@ jobs:
         id: meta
         run: |
           SHA_TAG=${GITHUB_SHA::7}
-            echo "sha_tag=$SHA_TAG" >> $GITHUB_OUTPUT
+          echo "sha_tag=$SHA_TAG" >> $GITHUB_OUTPUT
 
-            case "${{ matrix.app }}" in
-            postgres)
-                echo "image=${{ secrets.DOCKER_USERNAME }}/postgres" >> $GITHUB_OUTPUT
-                echo "context=./postgres" >> $GITHUB_OUTPUT
-                ;;
-            redis)
-                echo "image=${{ secrets.DOCKER_USERNAME }}/redis" >> $GITHUB_OUTPUT
-                echo "context=./redis" >> $GITHUB_OUTPUT
-                ;;
-            worker)
-                echo "image=${{ secrets.DOCKER_USERNAME }}/worker" >> $GITHUB_OUTPUT
-                echo "context=./worker" >> $GITHUB_OUTPUT
-                ;;
-            vote)
-                echo "image=${{ secrets.DOCKER_USERNAME }}/vote" >> $GITHUB_OUTPUT
-                echo "context=./vote" >> $GITHUB_OUTPUT
-                ;;
-            result)
-                echo "image=${{ secrets.DOCKER_USERNAME }}/result" >> $GITHUB_OUTPUT
-                echo "context=./result" >> $GITHUB_OUTPUT
-                ;;
-            esac
+          case "${{ matrix.app }}" in
+          worker)
+            echo "image=${{ secrets.DOCKER_USERNAME }}/worker" >> $GITHUB_OUTPUT
+            echo "context=./worker" >> $GITHUB_OUTPUT
+            ;;
+          vote)
+            echo "image=${{ secrets.DOCKER_USERNAME }}/vote" >> $GITHUB_OUTPUT
+            echo "context=./vote" >> $GITHUB_OUTPUT
+            ;;
+          result)
+            echo "image=${{ secrets.DOCKER_USERNAME }}/result" >> $GITHUB_OUTPUT
+            echo "context=./result" >> $GITHUB_OUTPUT
+            ;;
+          esac
     
       #Build and push images
       - name: Build and push images to docker hub
@@ -133,28 +125,29 @@ jobs:
         run: |
             kubectl get ns "$K8S_NAMESPACE" || kubectl create ns "$K8S_NAMESPACE"
 
-        # Apply all Kubernetes resources in /k8s
+      # Apply all Kubernetes resources in /k8s
       - name: Apply base k8s
         run: |
             kubectl apply -n "$K8S_NAMESPACE" -f k8s/
 
-        # Compute image tags for all services
+      # Compute image tags for all services
       - name: Compute image tags
         id: tag
         run: |
             SHA_TAG=${GITHUB_SHA::7}
 
-            echo "postgres_image=${{ secrets.DOCKER_USERNAME }}/postgres:${SHA_TAG}" >> $GITHUB_OUTPUT
-            echo "redis_image=${{ secrets.DOCKER_USERNAME }}/redis:${SHA_TAG}" >> $GITHUB_OUTPUT
+            # Images for postgres and redis
+            echo "postgres_image=postgres:latest" >> $GITHUB_OUTPUT
+            echo "redis_image=redis:latest" >> $GITHUB_OUTPUT
+
+            # Images with SHA tag
             echo "vote_image=${{ secrets.DOCKER_USERNAME }}/vote:${SHA_TAG}" >> $GITHUB_OUTPUT
             echo "result_image=${{ secrets.DOCKER_USERNAME }}/result:${SHA_TAG}" >> $GITHUB_OUTPUT
             echo "worker_image=${{ secrets.DOCKER_USERNAME }}/worker:${SHA_TAG}" >> $GITHUB_OUTPUT
 
-        # Update each deployment with the new image
+      # Update deployment with the new image
       - name: Set images to new SHA tag
         run: |
-            kubectl -n "$K8S_NAMESPACE" set image deployment/postgres postgres=${{ steps.tag.outputs.postgres_image }}
-            kubectl -n "$K8S_NAMESPACE" set image deployment/redis redis=${{ steps.tag.outputs.redis_image }}
             kubectl -n "$K8S_NAMESPACE" set image deployment/vote vote=${{ steps.tag.outputs.vote_image }}
             kubectl -n "$K8S_NAMESPACE" set image deployment/result result=${{ steps.tag.outputs.result_image }}
             kubectl -n "$K8S_NAMESPACE" set image deployment/worker worker=${{ steps.tag.outputs.worker_image }}
