@@ -155,18 +155,18 @@ jobs:
             kubectl -n "$K8S_NAMESPACE" set image deployment/eugene-deployment-worker eugene-deployment-worker=${{ steps.tag.outputs.worker_image }}
 
         # Patch ingress to ensure correct host
-      - name: Patch Ingress host if needed
-        shell: bash
-        run: |
-            CURRENT_HOST=$(kubectl -n "$K8S_NAMESPACE" get ingress -o jsonpath='{.items[0].spec.rules[0].host}')
-            if [ "$CURRENT_HOST" != "$INGRESS_HOST" ]; then
-            echo "Patching ingress host to $INGRESS_HOST"
-            kubectl -n "$K8S_NAMESPACE" patch ingress $(kubectl -n "$K8S_NAMESPACE" get ingress -o jsonpath='{.items[0].metadata.name}') \
-                --type='json' \
-                -p="[ {\"op\": \"replace\", \"path\": \"/spec/rules/0/host\", \"value\": \"${INGRESS_HOST}\" } ]"
-            else
-            echo "Ingress already correctly set to $INGRESS_HOST"
-            fi
+#      - name: Patch Ingress host if needed
+#        shell: bash
+#        run: |
+#            CURRENT_HOST=$(kubectl -n "$K8S_NAMESPACE" get ingress -o jsonpath='{.items[0].spec.rules[0].host}')
+#            if [ "$CURRENT_HOST" != "$INGRESS_HOST" ]; then
+#            echo "Patching ingress host to $INGRESS_HOST"
+#            kubectl -n "$K8S_NAMESPACE" patch ingress $(kubectl -n "$K8S_NAMESPACE" get ingress -o jsonpath='{.items[0].metadata.name}') \
+#                --type='json' \
+#               -p="[ {\"op\": \"replace\", \"path\": \"/spec/rules/0/host\", \"value\": \"${INGRESS_HOST}\" } ]"
+#            else
+#            echo "Ingress already correctly set to $INGRESS_HOST"
+#            fi
 
         # Wait for all app rollouts
       - name: Wait for rollout (postgres)
