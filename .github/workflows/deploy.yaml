@@ -183,11 +183,3 @@ jobs:
 
       - name: Wait for rollout (worker)
         run: kubectl -n "$K8S_NAMESPACE" rollout status deploy/eugene-deployment-worker --timeout=120s
-
-##      - name: Quick smoke test via Ingress
-#        run: |
-#          # You need DNS already pointing at the NGINX Ingress ELB (previous lab).
-#          # Test the API route:
-#          curl -s --fail "http://${INGRESS_HOST}/api/ping" | tee /tmp/api.txt
-#          echo
-#          echo "Response above should contain a ping or message from backend."
