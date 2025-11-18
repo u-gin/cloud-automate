@@ -3,13 +3,16 @@ kind: Ingress
 metadata:
   name: eugene-ingress-voting-app
   namespace: eugene
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+  
 spec:
-  ingressClassName: nginx-eugene
+  ingressClassName: "nginx"
   rules:
-    - host: eugene.local
+    - host: eugene.vote.diogohack.shop
       http:
         paths:
-          - path: /vote
+          - path: /
             pathType: Prefix
             backend:
               service:
@@ -17,10 +20,16 @@ spec:
                 port:
                   number: 80
 
-          - path: /result
+    - host:  eugene.result.diogohack.shop
+      http:
+        paths:
+          - path: /
             pathType: Prefix
             backend:
               service:
                 name: eugene-service-result
                 port:
                   number: 80
+
+
+
