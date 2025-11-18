@@ -17,10 +17,10 @@ spec:
           image: ugindev/worker:latest
           env:
             - name: REDIS_HOST
-              value: "eugene-server-redis"
+              value: "eugene-service-redis"
               
             - name: POSTGRES_HOST
-              value: "eugene-server-postgres"
+              value: "eugene-service-postgres"
 
             - name: POSTGRES_USER
               valueFrom:
