@@ -116,7 +116,7 @@ jobs:
         # Sanity checks
       - name: Verify access
         run: |
-            kubectl version --short
+            kubectl version
             kubectl get ns
             kubectl get ingress -A || true
 
