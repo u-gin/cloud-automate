@@ -21,7 +21,7 @@ jobs:
 
     strategy:
       matrix:
-        app: [worker, vote, result]
+        app: [vote, worker, result]
 
     permissions:
       id-token: write
@@ -60,14 +60,16 @@ jobs:
           echo "sha_tag=$SHA_TAG" >> $GITHUB_OUTPUT
 
           case "${{ matrix.app }}" in
-          worker)
-            echo "image=${{ secrets.DOCKER_USERNAME }}/worker" >> $GITHUB_OUTPUT
-            echo "context=./worker" >> $GITHUB_OUTPUT
-            ;;
           vote)
             echo "image=${{ secrets.DOCKER_USERNAME }}/vote" >> $GITHUB_OUTPUT
             echo "context=./vote" >> $GITHUB_OUTPUT
             ;;
+            
+          worker)
+            echo "image=${{ secrets.DOCKER_USERNAME }}/worker" >> $GITHUB_OUTPUT
+            echo "context=./worker" >> $GITHUB_OUTPUT
+            ;;
+          
           result)
             echo "image=${{ secrets.DOCKER_USERNAME }}/result" >> $GITHUB_OUTPUT
             echo "context=./result" >> $GITHUB_OUTPUT
