@@ -148,9 +148,9 @@ jobs:
       # Update deployment with the new image
       - name: Set images to new SHA tag
         run: |
-            kubectl -n "$K8S_NAMESPACE" set image deployment/eugene-deployment-vote vote=${{ steps.tag.outputs.vote_image }}
-            kubectl -n "$K8S_NAMESPACE" set image deployment/eugene-deployment-result result=${{ steps.tag.outputs.result_image }}
-            kubectl -n "$K8S_NAMESPACE" set image deployment/eugene-deployment-worker worker=${{ steps.tag.outputs.worker_image }}
+            kubectl -n "$K8S_NAMESPACE" set image deployment/eugene-deployment-vote eugene-deployment-vote=${{ steps.tag.outputs.vote_image }}
+            kubectl -n "$K8S_NAMESPACE" set image deployment/eugene-deployment-result eugene-deployment-result=${{ steps.tag.outputs.result_image }}
+            kubectl -n "$K8S_NAMESPACE" set image deployment/eugene-deployment-worker eugene-deployment-worker=${{ steps.tag.outputs.worker_image }}
 
         # Patch ingress to ensure correct host
       - name: Patch Ingress host if needed
