@@ -21,7 +21,7 @@ jobs:
 
     strategy:
       matrix:
-        app: [vote, worker, result]
+        app: [vote, result, worker]
 
     permissions:
       id-token: write
@@ -64,15 +64,15 @@ jobs:
             echo "image=${{ secrets.DOCKER_USERNAME }}/vote" >> $GITHUB_OUTPUT
             echo "context=./vote" >> $GITHUB_OUTPUT
             ;;
-            
-          worker)
-            echo "image=${{ secrets.DOCKER_USERNAME }}/worker" >> $GITHUB_OUTPUT
-            echo "context=./worker" >> $GITHUB_OUTPUT
-            ;;
           
           result)
             echo "image=${{ secrets.DOCKER_USERNAME }}/result" >> $GITHUB_OUTPUT
             echo "context=./result" >> $GITHUB_OUTPUT
+            ;;
+
+          worker)
+            echo "image=${{ secrets.DOCKER_USERNAME }}/worker" >> $GITHUB_OUTPUT
+            echo "context=./worker" >> $GITHUB_OUTPUT
             ;;
           esac
     
