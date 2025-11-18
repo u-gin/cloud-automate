@@ -19,12 +19,12 @@ RUN npm ci && \
 COPY . .
 
 # Set default environment variables for both the application and PostgreSQL connection
-ENV PORT=80 \
-    POSTGRES_HOST=10.0.2.212 \
-    POSTGRES_PORT=5432 \
-    POSTGRES_USER=postgres \
-    POSTGRES_PASSWORD=postgres \
-    POSTGRES_DATABASE=postgres
+ENV PORT=80 
+#    POSTGRES_HOST=10.0.2.212 \
+#    POSTGRES_PORT=5432 \
+#    POSTGRES_USER=postgres \
+#    POSTGRES_PASSWORD=postgres \
+#    POSTGRES_DATABASE=postgres
 
 EXPOSE 80
 
