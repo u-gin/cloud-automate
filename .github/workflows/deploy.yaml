@@ -148,9 +148,9 @@ jobs:
       # Update deployment with the new image
       - name: Set images to new SHA tag
         run: |
-            kubectl -n "$K8S_NAMESPACE" set image deployment/vote vote=${{ steps.tag.outputs.vote_image }}
-            kubectl -n "$K8S_NAMESPACE" set image deployment/result result=${{ steps.tag.outputs.result_image }}
-            kubectl -n "$K8S_NAMESPACE" set image deployment/worker worker=${{ steps.tag.outputs.worker_image }}
+            kubectl -n "$K8S_NAMESPACE" set image deployment/eugene-deployment-vote vote=${{ steps.tag.outputs.vote_image }}
+            kubectl -n "$K8S_NAMESPACE" set image deployment/eugene-deployment-result result=${{ steps.tag.outputs.result_image }}
+            kubectl -n "$K8S_NAMESPACE" set image deployment/eugene-deployment-worker worker=${{ steps.tag.outputs.worker_image }}
 
         # Patch ingress to ensure correct host
       - name: Patch Ingress host if needed
@@ -168,19 +168,19 @@ jobs:
 
         # Wait for all app rollouts
       - name: Wait for rollout (postgres)
-        run: kubectl -n "$K8S_NAMESPACE" rollout status deploy/postgres --timeout=120s
+        run: kubectl -n "$K8S_NAMESPACE" rollout status deploy/eugene-deployment-postgres --timeout=120s
 
       - name: Wait for rollout (redis)
-        run: kubectl -n "$K8S_NAMESPACE" rollout status deploy/redis --timeout=120s
+        run: kubectl -n "$K8S_NAMESPACE" rollout status deploy/eugene-deployment-redis --timeout=120s
 
       - name: Wait for rollout (vote)
-        run: kubectl -n "$K8S_NAMESPACE" rollout status deploy/vote --timeout=120s
+        run: kubectl -n "$K8S_NAMESPACE" rollout status deploy/eugene-deployment-vote --timeout=120s
 
       - name: Wait for rollout (result)
-        run: kubectl -n "$K8S_NAMESPACE" rollout status deploy/result --timeout=120s
+        run: kubectl -n "$K8S_NAMESPACE" rollout status deploy/eugene-deployment-result --timeout=120s
 
       - name: Wait for rollout (worker)
-        run: kubectl -n "$K8S_NAMESPACE" rollout status deploy/worker --timeout=120s
+        run: kubectl -n "$K8S_NAMESPACE" rollout status deploy/eugene-deployment-worker --timeout=120s
 
 #      - name: Quick smoke test via Ingress
 #        run: |
